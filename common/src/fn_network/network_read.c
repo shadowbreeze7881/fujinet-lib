@@ -41,6 +41,10 @@ extern int network_read_msdos(const char* devicespec, unsigned char *buf, unsign
 #include "fujinet-network-adam.h"
 #endif
 
+#ifdef __MSX__
+#include "fujinet-network-msx.h"
+#endif
+
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
