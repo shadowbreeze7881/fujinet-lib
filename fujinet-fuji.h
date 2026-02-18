@@ -256,8 +256,8 @@ typedef struct
 #endif
 
 #ifdef __MSX__
-typedef struct {
-
+typedef struct 
+{
     uint16_t numSectors;
     uint16_t sectorSize;
     uint8_t hostSlot;

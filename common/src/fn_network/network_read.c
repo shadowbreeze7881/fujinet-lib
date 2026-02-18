@@ -72,7 +72,7 @@ int16_t network_read(const char *devicespec, uint8_t *buf, uint16_t len)
     const char *after;
 #endif
 
-#if defined(__ATARI__) || defined(_CMOC_VERSION_) || defined(__CBM__) || defined(__PMD85__) || defined(__WATCOMC__) || defined(__ADAM__)
+#if defined(__ATARI__) || defined(_CMOC_VERSION_) || defined(__CBM__) || defined(__PMD85__) || defined(__WATCOMC__) || defined(__ADAM__) || define(__MSX__)
     uint8_t unit = 0;
 #endif
 
@@ -84,7 +84,7 @@ int16_t network_read(const char *devicespec, uint8_t *buf, uint16_t len)
         return fn_error(SP_ERR_BAD_CMD);
 #elif defined(__CBM__)
         return FN_ERR_BAD_CMD;
-#elif defined(_CMOC_VERSION_) || defined(__PMD85__) || defined(__WATCOMC__) || defined(__ADAM__)
+#elif defined(_CMOC_VERSION_) || defined(__PMD85__) || defined(__WATCOMC__) || defined(__ADAM__) || define(__MSX__)
         return fn_error(132); // invalid command
 #endif
 
@@ -106,6 +106,8 @@ int16_t network_read(const char *devicespec, uint8_t *buf, uint16_t len)
     unit = getDeviceNumber(devicespec, &after);
 #elif defined(__ADAM__)
     unit = network_unit_adamnet(devicespec);
+#elif defined(__MSX__)
+    // More to come
 #endif
 
     while (1) {
@@ -118,7 +120,7 @@ int16_t network_read(const char *devicespec, uint8_t *buf, uint16_t len)
         r = network_status(devicespec, &fn_network_bw, &fn_network_conn, &fn_network_error);
 #elif defined(__CBM__)
         r = network_status(devicespec, &fn_network_bw, &fn_network_conn, &fn_network_error);
-#elif defined(_CMOC_VERSION_) || defined(__PMD85__) || defined(__WATCOMC__) || defined(__ADAM__)
+#elif defined(_CMOC_VERSION_) || defined(__PMD85__) || defined(__WATCOMC__) || defined(__ADAM__) || defined(__MSX__)
         r = network_status(devicespec, &fn_network_bw, &fn_network_conn, &fn_network_error);
 #endif
 
@@ -163,6 +165,8 @@ int16_t network_read(const char *devicespec, uint8_t *buf, uint16_t len)
         cbm_read(unit + CBM_DATA_CHANNEL_0, buf, fetch_size);
 #elif defined(__ADAM__)
         network_read_adam(devicespec, buf, fetch_size);
+#elif defined(__MSX__)
+        // Coming soon
 #endif
 #if defined(_CMOC_VERSION_) || defined(__PMD85__)
         read_r.opcode = OP_NET;
