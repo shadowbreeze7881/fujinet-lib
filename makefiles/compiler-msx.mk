@@ -1,6 +1,6 @@
 CC        := zcc
 AR        := z80asm
-CFLAGS    := +msx  -Imsx/src/bus
+CFLAGS    := +msx -subtype=msxdos  -Imsx/src/bus
 # ASFLAGS   :=
 ASMEXT    := .asm
 
