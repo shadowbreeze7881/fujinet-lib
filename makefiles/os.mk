@@ -30,6 +30,10 @@ CURRENT_PLATFORM_msdos := msdos
 
 CURRENT_PLATFORM_adam := adam
 
+CURRENT_PLATFORM_msx := msx
+CURRENT_PLATFORM_msx2 := msx
+CURRENT_PLATFORM_msxrom := msxrom
+
 CURRENT_PLATFORM = $(CURRENT_PLATFORM_$(CURRENT_TARGET))
 
 # platform specific src paths (PSP)
