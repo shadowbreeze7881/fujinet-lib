@@ -9,12 +9,27 @@ unsigned char read_from_slot(unsigned char slot, unsigned int address) {
     return rdslt(slot, address);
 }
 
-void main() {
+// Function to write to the device once found
+void write_to_device(unsigned char slot_id, unsigned int address, unsigned char value) {
+    // wrslt(slot_id, address, value)
+    // This safely switches the slot, writes the byte, and switches back.
+    wrslt(slot_id, address, value);
+}
+
+uint8_t network_status(const char *devicespec, uint16_t *bw, uint8_t *c, uint8_t *err)
+{
+    struct _ns
+    {
+        unsigned short bw;
+        bool connected;
+        unsigned char err;
+    } ns;
+    
     unsigned char found_slot = 0;
     
     printf("Probing slots for device...\n");
 
-    for (int p = 0; p < 4; p++) {
+    for (uint8_t p = 0; p < 4; p++) {
         // We check if slot is expanded (simplified check)
         for (int s = 0; s < 4; s++) {
             unsigned char slot_id = 0x80 | (s << 2) | p; // Construct Slot ID
@@ -34,5 +49,11 @@ void main() {
             }
         }
         if (found_slot) break;
+    }
+    
+    // Usage in your main:
+    if (found_slot) {
+        printf("Writing to device at 0x7000...\n");
+        write_to_device(found_slot, 0x7000, 0xFF); 
     }
 }
