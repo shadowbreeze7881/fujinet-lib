@@ -1,5 +1,5 @@
-#include <msx.h>
 #include <stdio.h>
+#include "fujinet-network-msx.h"
 
 uint8_t network_status(const char *devicespec, uint16_t *bw, uint8_t *c, uint8_t *err)
 {
