@@ -3,42 +3,29 @@
 
 uint8_t network_status(const char *devicespec, uint16_t *bw, uint8_t *c, uint8_t *err)
 {
-    struct _ns
-    {
-        unsigned short bw;
-        bool connected;
-        unsigned char err;
-    } ns;
-    
-    unsigned char found_slot = 0;
-    
-    printf("Probing slots for device...\n");
+	// if we do a read on the nw_status_cmd channel, we get the status for the specified devicespec, but we have to tell FN which device we want the status for first
+	const char *after;
+	uint8_t status[4];
+    uint16_t temp_bw = 0;
+    uint8_t temp_c = 0;
+	uint8_t temp_err = 0;
+	char *ptr;
 
-    for (uint8_t p = 0; p < 4; p++) {
-        // We check if slot is expanded (simplified check)
-        for (int s = 0; s < 4; s++) {
-            unsigned char slot_id = 0x80 | (s << 2) | p; // Construct Slot ID
-            
-            // Look for MSX ROM Header signature 'AB' at 0x4000
-            if (read_from_slot(slot_id, 0x4000) == 0x41 && 
-                read_from_slot(slot_id, 0x4001) == 0x42) {
-                
-                printf("Found ROM in Slot %d-%d\n", p, s);
-                
-                // Here you would check a specific address for your device ID
-                // Example: If your device puts 'X' at 0x4010
-                if (read_from_slot(slot_id, 0x4010) == 'X') {
-                    found_slot = slot_id;
-                    break;
-                }
-            }
-        }
-        if (found_slot) break;
-    }
+	// a "binary status" command, requires up to date firmware
+	uint8_t data_channel = getDeviceNumber(devicespec, &after) + CBM_DATA_CHANNEL_0;
+	nw_status_cmd[8] = data_channel + '0';   // overwrite with network device id
+
+
     
-    // Usage in your main:
-    if (found_slot) {
-        printf("Writing to device at 0x7000...\n");
-        write_to_device(found_slot, 0x7000, 0xFF); 
+	if (bw) {
+        *bw = (uint16_t)(status[1] << 8) | status[0]; // Combine the first two bytes for bw
     }
+    if (c) {
+        *c = status[2]; // The third byte is directly assigned to c
+    }
+    if (err) {
+        *err = status[3]; // The fourth byte is directly assigned to err
+    }
+
+	return FN_ERR_OK;
 }
