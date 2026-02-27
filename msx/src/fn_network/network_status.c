@@ -1,21 +1,6 @@
 #include <msx.h>
 #include <stdio.h>
 
-// This helper function tries to read a byte from a specific slot/subslot
-// It uses the MSX BIOS "RDSLT" (Read Slot) function at 0x000C
-unsigned char read_from_slot(unsigned char slot, unsigned int address) {
-    // z88dk provides rdslt: rdslt(slot_id, address)
-    // slot_id format: F000SSPP (F=Expanded flag, SS=Subslot, PP=Primary)
-    return rdslt(slot, address);
-}
-
-// Function to write to the device once found
-void write_to_device(unsigned char slot_id, unsigned int address, unsigned char value) {
-    // wrslt(slot_id, address, value)
-    // This safely switches the slot, writes the byte, and switches back.
-    wrslt(slot_id, address, value);
-}
-
 uint8_t network_status(const char *devicespec, uint16_t *bw, uint8_t *c, uint8_t *err)
 {
     struct _ns
