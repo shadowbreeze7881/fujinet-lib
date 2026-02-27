@@ -11,12 +11,9 @@ uint8_t network_status(const char *devicespec, uint16_t *bw, uint8_t *c, uint8_t
 	uint8_t temp_err = 0;
 	char *ptr;
 
-	// a "binary status" command, requires up to date firmware
-	uint8_t data_channel = getDeviceNumber(devicespec, &after) + CBM_DATA_CHANNEL_0;
-	nw_status_cmd[8] = data_channel + '0';   // overwrite with network device id
+	uint8_t unit = network_unit(devicespec);
 
 
-    
 	if (bw) {
         *bw = (uint16_t)(status[1] << 8) | status[0]; // Combine the first two bytes for bw
     }
