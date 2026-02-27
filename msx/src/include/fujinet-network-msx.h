@@ -10,3 +10,6 @@
 #define FUJINET_NETWORK_MSX_H
 
 #include <stdint.h>
+#include <msx.h>
+
+uint8_t getDeviceNumber(const char* input, const char** afterDeviceSpec);
