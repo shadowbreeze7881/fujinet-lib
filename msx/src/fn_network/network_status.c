@@ -13,6 +13,31 @@ uint8_t network_status(const char *devicespec, uint16_t *bw, uint8_t *c, uint8_t
 
 	uint8_t unit = network_unit(devicespec);
 
+	struct _s
+    {
+        uint8_t opcode;
+        uint8_t unit;
+        uint8_t cmd;
+        uint8_t aux1;
+        uint8_t aux2;
+    } s;
+
+	unsigned char device_id = 0x71; // I'm assuming Fujinet's Device ID will be 0x71
+    unsigned char data_to_write = 1;
+    
+    // 1. Select the device by writing its ID to Port $40
+    outp(0x40, device_id);
+
+    // 2. Verify device existence by reading back from Port $40
+    // (Should return the bitwise complement of the ID)
+    unsigned char check = inp(0x40);
+    if (check != (unsigned char)(~device_id)) {
+        return FN_ERR_IO_ERROR;
+    }
+
+	outp(0x41, data_to_write);
+
+	unsigned char rec = (unsigned char)inp(0x41);
 
 	if (bw) {
         *bw = (uint16_t)(status[1] << 8) | status[0]; // Combine the first two bytes for bw
