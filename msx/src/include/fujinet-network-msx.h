@@ -10,3 +10,5 @@
 #define FUJINET_NETWORK_MSX_H
 
 #include <stdint.h>
+#include <msx.h>
+#include "fujinet-fuji.h"
