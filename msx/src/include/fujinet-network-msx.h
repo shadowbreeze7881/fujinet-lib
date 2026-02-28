@@ -12,3 +12,5 @@
 #include <stdint.h>
 #include <msx.h>
 #include "fujinet-fuji.h"
+
+uint8_t getDeviceNumber(const char* input, const char** afterDeviceSpec);

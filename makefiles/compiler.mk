@@ -20,6 +20,14 @@ else ifeq ($(CURRENT_TARGET),adam)
 
 -include makefiles/compiler-adam.mk
 
+else ifeq ($(CURRENT_TARGET),msx)
+
+-include makefiles/compiler-msx.mk
+
+else ifeq ($(CURRENT_TARGET),msxrom)
+
+-include makefiles/compiler-msxrom.mk
+
 else
 
 -include makefiles/compiler-cc65.mk
